@@ -49,13 +49,14 @@
 # 개발 배경 및 문제 정의 
 <div align="center">
 <img width="700" height="600" alt="Gemini_Generated_Image_r5frjlr5frjlr5fr" src="https://github.com/user-attachments/assets/f695b4c4-d69a-43c8-a22d-41e5c793c44f" />
-</d성
+</div>
 
 > **일관된 평가 기준 적용 및 대화형 면접 경험, 구체적 피드백을 동시에 제공하는 시스템의 부재**
 
 <div align="center">
 <img width="700" height="350" alt="<img width="471" height="467" alt="image" src="https://github.com/user-attachments/assets/93502512-3782-4996-a5dd-89505cd5cc1d" />
 </div>
+
 
 * **평가 기준의 최적화**
     * 직무 및 조직 특성에 맞춘 질문·평가 기준 커스터마이징 수행
