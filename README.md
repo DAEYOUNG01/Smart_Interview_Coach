@@ -54,7 +54,7 @@
 > **일관된 평가 기준 적용 및 대화형 면접 경험, 구체적 피드백을 동시에 제공하는 시스템의 부재**
 
 <div align="center">
-<img width="700" height="350" alt="<img width="471" height="467" alt="image" src="https://github.com/user-attachments/assets/93502512-3782-4996-a5dd-89505cd5cc1d" />
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/93502512-3782-4996-a5dd-89505cd5cc1d" />
 </div>
 
 
