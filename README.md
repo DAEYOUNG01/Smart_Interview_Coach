@@ -46,10 +46,60 @@
 
 ---
 
-# 개발 배경 및 문제 정의 
+# 1. 개발 배경 및 문제 정의 
 <div align="center">
 <img width="700" height="600" alt="Gemini_Generated_Image_r5frjlr5frjlr5fr" src="https://github.com/user-attachments/assets/f695b4c4-d69a-43c8-a22d-41e5c793c44f" />
 </div>
+
+#### 📊 1.1 채용/면접 프로세스의 현황
+
+> **서류 전형 → 필기/AI역량검사 → 1·2차 면접 → 최종 합격 통보**
+
+<table>
+  <thead>
+    <tr>
+      <th width="100">단계</th>
+      <th width="150">세부 절차</th>
+      <th width="650">상세 내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><b>사전 준비</b></td>
+      <td align="center"><b>서류 검토</b></td>
+      <td>
+        • 지원자의 기본 사항(학력, 경력, 자격증 등) 파악<br>
+        • 이력서·자기소개서를 읽고 주요 경험과 키워드(프로젝트, 역할, 성과 등) 정리
+      </td>
+    </tr>
+    <tr>
+      <td align="center"></td>
+      <td align="center"><b>면접 전략 수립</b></td>
+      <td>
+        • 직무·조직에 따라 핵심 확인 포인트(직무 적합도, 성장 가능성 등) 선정<br>
+        • 각 면접관에게 담당 영역과 질문 방향을 분배하고, 예상 질문 리스트를 준비
+      </td>
+    </tr>
+    <tr>
+      <td align="center"><b>면접 진행</b></td>
+      <td align="center"><b>질문 및 답변</b></td>
+      <td>
+        • 준비한 질문을 중심으로 질의응답을 진행, 답변 내용을 간단히 메모하거나 평가표에 기록<br>
+        • 답변 검증 필요 시, 심화/추가 질문을 통해 정보 보완
+      </td>
+    </tr>
+    <tr>
+      <td align="center"></td>
+      <td align="center"><b>면접 평가</b></td>
+      <td>
+        • 면접 종료 후 면접관들이 모여 지원자에 대한 의견 공유·조율<br>
+        • 전문성·태도 등 항목별 수동 평가 및 결과 취합 후 최종 결정
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+---
 
 > **일관된 평가 기준 적용 및 대화형 면접 경험, 구체적 피드백을 동시에 제공하는 시스템의 부재**
 
