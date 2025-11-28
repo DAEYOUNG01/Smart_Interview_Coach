@@ -1,4 +1,4 @@
-# Smart_Interview_Coach 
+# Smart_Interview_Coach_LangChain
 # AI 면접관 Agent
 
 <div align="center">
@@ -46,7 +46,7 @@
 
 ---
 
-# 1. 개발 배경 및 문제 정의 
+# 1️⃣ 개발 배경 및 문제 정의 
 <div align="center">
 <img width="700" height="600" alt="Gemini_Generated_Image_r5frjlr5frjlr5fr" src="https://github.com/user-attachments/assets/f695b4c4-d69a-43c8-a22d-41e5c793c44f" />
 </div>
@@ -131,8 +131,11 @@
 
 ---
 
+# 2️⃣ 시스템 개요 및 서비스 흐름
 
-
+<div align="center">
+<img width="700" height="480" alt="2025-11-28 13 22 06" src="https://github.com/user-attachments/assets/74cdc6ff-70b9-42f5-adbe-0736dff74ba1" />
+</div>
 
 
 
