@@ -1,4 +1,4 @@
-# Smart_Interview_Coach_LangChain
+<img width="130" height="62" alt="image" src="https://github.com/user-attachments/assets/9374549a-d731-4ade-b014-2525da3e53d1" /># Smart_Interview_Coach_LangChain
 # AI 면접관 Agent
 
 <div align="center">
@@ -51,7 +51,7 @@
 <img width="700" height="600" alt="Gemini_Generated_Image_r5frjlr5frjlr5fr" src="https://github.com/user-attachments/assets/f695b4c4-d69a-43c8-a22d-41e5c793c44f" />
 </div>
 
-### 📊 1.1 채용/면접 프로세스의 현황
+### 🍎 1.1 채용/면접 프로세스의 현황
 
 > **서류 전형 → 필기/AI역량검사 → 1·2차 면접 → 최종 합격 통보**
 
@@ -101,7 +101,7 @@
 
 ---
 
-### 📊 1.2 AI 면접관 Agent가 풀고자 하는 핵심 문제
+### 🍎 1.2 AI 면접관 Agent가 풀고자 하는 핵심 문제
 
 > **일관된 평가 기준 적용 및 대화형 면접 경험, 구체적 피드백을 동시에 제공하는 시스템의 부재**
 
@@ -119,7 +119,7 @@
 
 ---
 
-### 📊 1.3 AI 면접관 Agent 요구사항 정의
+### 🍎 1.3 AI 면접관 Agent 요구사항 정의
 
 * **답변에 대한 다각도 평가 체계 구축**
 * **질문 및 평가 기준 커스터마이징 기능**
@@ -133,10 +133,80 @@
 
 # 2️⃣ 시스템 개요 및 서비스 흐름
 
+### 🍋 2.1 서비스 프로세스 (질문 생성 → 답변 수집 → 평가 → 피드백)
+
 <div align="center">
-<img width="700" height="480" alt="2025-11-28 13 22 06" src="https://github.com/user-attachments/assets/74cdc6ff-70b9-42f5-adbe-0736dff74ba1" />
+<img width="700" height="480" alt="2025-11-28 13 22 06" src="https://github.com/user-attachments/assets/1a2865e0-52fa-43a5-88e2-4283d8a994da" />
 </div>
 
+> **전체적인 AI 면접관 시스템 구조도**
+
+---
+
+### 🍋 2.2 전체 시스템 아키텍처
+
+| Initial model | feature engineering |
+|---------|---------|
+| <img width="550" height="420" alt="image" src="https://github.com/user-attachments/assets/4486b7b2-e6ed-4a4c-8fc3-5cc585b2860d" /> | <img width="550" height="420" alt="image" src="https://github.com/user-attachments/assets/b8de08ac-b15d-437b-a94c-398de419f428" /> |
+
+> **초기모델 -> 고도화를 통한 요구사항 추가**
+
+---
+
+### 🍋 2.3 주요 기능 요약
+
+<table>
+  <thead>
+    <tr>
+      <th width="200">기능명</th>
+      <th width="600">상세 내용 및 핵심 로직</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">💡 <b>질문 생성 및 선정</b></td>
+      <td>
+        • 이력서 기반 질문 풀(Pool) 생성 후, 키워드 중요도에 따른 재정렬·선별 수행<br>
+        • 직무·경험 키워드 중심의 핵심 역량 검증용 구조화된 질문 노출
+      </td>
+    </tr>
+    <tr>
+      <td align="center">💡 <b>자동 평가</b></td>
+      <td>
+        • 5개 항목(관련성·구체성·논리성·실무성·소통) 기준 5단계 세분화 평가<br>
+        • 평가 결과의 JSON 구조화(점수·등급·코멘트) 및 피드백 모듈 연동
+      </td>
+    </tr>
+    <tr>
+      <td align="center">💡 twisted_rightwards_arrows <b>인터뷰 Flow Control</b></td>
+      <td>
+        • 답변 평가 점수에 따른 다음 질문 유형(꼬리 질문 vs 새 질문) 동적 결정<br>
+        • 일정 개수/시간 및 점수 조건 충족 시 면접 자동 종료 처리
+      </td>
+    </tr>
+    <tr>
+      <td align="center">💡 <b>맞춤형 피드백 생성</b></td>
+      <td>
+        • 질문별 평가 결과 기반 강점 요약·보완점 및 향후 연습 방향 자동 생성<br>
+        • 웹 대시보드를 통한 전체 피드백 일괄 확인 및 시각화 제공
+      </td>
+    </tr>
+    <tr>
+      <td align="center">💡 <b>종합 리포트 생성</b></td>
+      <td>
+        • 지원자별 종합 점수·등급 및 인터뷰어 코멘트가 포함된 보고서 자동 생성<br>
+        • 레이더 차트 등 시각화 도구를 활용한 지원자 간 상대 평가 지원
+      </td>
+    </tr>
+    <tr>
+      <td align="center">💡 <b>관리자 기능</b></td>
+      <td>
+        • 평가 루브릭, 질문 템플릿, 점수 매핑 로직 등의 커스텀 수정·관리<br>
+        • 면접 세션별 State(진행 상황, 로그) 조회 및 LLM 모델/프롬프트 설정 변경
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 
 
