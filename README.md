@@ -151,6 +151,12 @@
 
 > **초기모델 -> 고도화를 통한 요구사항 추가**
 
+<div align="center">
+<img width="550" height="420" alt="image" src="https://github.com/user-attachments/assets/7429f337-be18-4dc1-ae3b-6c963546d074" />
+</div>
+
+> **Gradio 사용 구조**
+
 ---
 
 ### 🍉 2.3 주요 기능 요약
