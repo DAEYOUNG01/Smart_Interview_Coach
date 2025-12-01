@@ -258,3 +258,166 @@
 
 > **비정형 텍스트(이력서, 구어체 답변)를 Agent가 처리 가능한 구조화된 데이터(State)로 변환하는 과정 수행**
 
+| 텍스트 추출 (Parsing) | 설명 |
+| :--- | :--- |
+| 💡 **PDF** | PyMuPDF 라이브러리를 사용하여 페이지별 텍스트 추출 및 병함 |
+| 💡 **DOCX** | python-docx를 사용하여 문단 단위 텍스트 추출 |
+| 💡 **Cleaning** | 불필요한 공백 제거 및 줄바꿈 문자 정규화 |
+
+| 데이터 구조화 (Structuring) | 설명 |
+| :--- | :--- |
+| 💡 **LangGraph State 관리** | 인터뷰 전체 맥락을 유지하기 위해 InterviewState (TypedDict) 정의 |
+| 💡 **JSON Parsing** | LLM의 출력을 Python 객체로 변환하기 위해 PydanticOutputParser 적용 |
+* **예: Resume Summary -> summary_n_keywords 객체로 변환**
+* **예: Evaluation Result -> eval_answer 객체로 변환**
+<p></p>
+
+* 💡 **토큰 관리 전략**
+* **이력서 전체를 매번 프롬프트에 넣는 대신, '요약문(Summary)'과 '키워드(Keywords)'를 추출**
+* **Context로 활용함으로써 토큰 비용 절감 및 처리 속도 향상**
+
+--- 
+
+# 4️⃣ Agent 설계 및 구현 (Architecture & Implementation) 🌠
+
+> **본 시스템은 LangGraph 프레임워크를 기반으로 State를 관리, 역할에 따라 최적화된 LLM 모델 하이브리드 운용**
+
+### 🌠 4.1  LLM & Prompt Engineering
+
+> **효율적인 비용 관리와 응답 속도, 그리고 평가의 정확도를 모두 확보하기 위해 두 가지 모델을 목적에 따라 분리 후 사용**
+
+<table>
+  <thead>
+    <tr>
+      <th width="150">모델</th>
+      <th width="200">사용 모듈</th>
+      <th width="700">선정 이유</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>💡 <b>GPT-4o</b></td>
+      <td align="center"><b>답변 평가<br></td>
+      <td><b>복합적인 맥락 이해와 논리적 추론 능력 ⬆️, 답변의 미세한 뉘앙스와 점수 산정의 정확성을 보장</b></td>
+    </tr>
+    <tr>
+      <td>💡 <b>GPT-4o-mini</b></td>
+      <td align="center"><b>질문 생성, 이력서 분석</b></td>
+      <td><b>빠른 응답 속도와 낮은 비용으로 실시간 인터뷰의 효율성 향상</b></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+### 🌠 4.2  System Prompt 설계 (Persona Definition)
+
+> **면접관 Agent가 일관된 태도를 유지하도록 페르소나와 제약 조건을 명확히 설정**
+
+* **페르소나 (Persona): "전문적인 HR Recruiter" 및 "면접 코치"**
+* **어조 (Tone): 객관적이고 중립적인 태도, 정중한 한국어 존댓말 사용**
+* **제약 조건 (Constraints)**
+  - 질문은 한 번에 하나씩만 제시 (모호성 배제)
+  - 답변에 대한 힌트나 예시 제공 금지 (지원자 역량 검증 목적)
+  - 모든 출력은 지정된 JSON 스키마를 엄격히 준수
+    
+---
+
+    SYSTEM: "너는 채용 면접 코치다. 아래 정보를 바탕으로 ‘이전 답변’을 검토한 후 
+    지원자의 사고력·문제해결 방식·기술적 깊이를 더 확인할 수 있는 
+    심화 인터뷰 질문 1개만 생성하라. 반드시 JSON으로만 답하라."
+    
+    REQUIREMENTS:
+    - 이전 답변의 빈약하거나 모호했던 지점을 겨냥해 한 단계 파고드는 질문 생성
+    - 유사 질문/중복 질문 금지
+    - '왜/어떻게/무엇을 기준으로' 같은 탐색형 질문 활용
+
+---
+
+### 🌠 4.3  대화 관리 (Dialogue Management)
+
+> **LangGraph를 활용하여 인터뷰의 전체 흐름(Context)을 상태(State)로 관리하고, 평가 결과에 따라 다음 행동을 동적으로 결정**
+
+* **💡State관리 (InterviewState)**
+    - conversation : 누적된 대화 로그 (History)
+    - current_score : 최근 답변의 평가 점수
+    - resume_summary, keywords: 이력서 분석 고정 데이터
+
+* **💡컨텍스트 유지 (Context Retention)**
+    - 단순 모든 대화 기입 x, 이력서 요약 + 직전 Q&A + 평과 결과를 프롬프트에 주입 후 토큰 효율성 향상 + 맥락 유지
+
+* **💡동적 꼬리 질문 로직(Dynamic Follow-up)**
+    - 답변 평가 점수(5점 만점)에 따라 다음 노드(Node)로 분기(Branching)
+    - 2.0 < 점수 < 3.5: 답변이 애매하거나 검증이 필요한 경우 → 꼬리 질문(Deepen Question) 생성
+    - 그 외 (너무 낮거나 완벽함): 더 파고들 필요가 없다고 판단 → 새로운 주제(New Topic)로 전환
+
+--- 
+
+### 🌠 4.4  자동 평가 모듈 설계 (Auto-Evaluation)
+> **주관적인 텍스트 평가를 정량적인 점수로 변환하기 위해 Pydantic Parser를 활용하여 구조화된 데이터를 출력**
+
+<div align="center">
+<img width="450" height="349" alt="image" src="https://github.com/user-attachments/assets/e67fff1d-c358-439b-859c-c02823ae4282" />
+</div>
+
+* **Input: 질문, 답변, 이력서 요약, 현재 전략**
+* **Output: JSON (평가 항목별 점수, 총점, 보완점 리스트)**
+  
+* **점수 산출 로직 (Scoring Mapping)**
+    - 5개 평가 항목(관련성, 구체성, 논리성, 명확성, 성과)에 대해 각각 1~5점 부여
+    - 평균 점수를 자동 계산하여 current_score State 업데이트
+
+* **피드백 생성 알고리즘**
+    - [질문 의도 파악] -> [답변 분석] -> [부족한 점 도출] 과정 후
+    - 지원자가 어떤 부분을 보완해야 합격 확률을 높일 수 있는지 구체적인 가이드 제공
+
+--- 
+
+# 5️⃣ 실험 및 성능 평가 (Architecture & Implementation) 
+
+<div align="center">
+<img width="700" height="480" alt="image" src="https://github.com/user-attachments/assets/b0fa62ba-17aa-4279-981d-9596ae8e7b0d" />
+</div>
+
+### 🍌 5.1 정량적 평가 (Quantitative Evaluation)
+> **시스템 내부적으로 정의된 5가지 평가 지표(Rubric)에 따라 LLM이 산출한 점수의 분포와 경향성을 분석**
+
+* **평가 지표: 관련성, 구체성, 논리성, 명확성, 실무 성과 (각 5점 만점)**
+* **점수 산출 결과**
+    - 답변의 구체성(수치, 사례)이 부족할 경우 → 평균 3.0점 이하 부여
+    - 질문 의도에 부합하고 근거가 명확한 경우 → 평균 4.5점 이상 부여
+* **동적 분기 검증**
+    - 점수가 2.0점 이하일 때 → decide_next_step 함수가 정상적으로 종료(End) 또는 재질문으로 라우팅 함을 확인
+    - 점수가 애매한 구간(2.0~3.5)일 때 → 꼬리 질문(Deepen Question)이 생성됨을 확인
+ 
+---
+
+### 🍌 5.2 정성적 평가 (Qualitative Evaluation)
+> **실제 생성된 인터뷰 리포트와 피드백의 구체성을 바탕으로 면접관으로서의 자연스러움을 평가**
+
+<table>
+  <thead>
+    <tr>
+      <th width="200">평가 항목</th>
+      <th width="1000">평가 결과 및 관찰 내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>💡 <b>피드백 구체성</b></td>
+      <td>단순한 "좋음/나쁨"이 아닌, "수치적 성과가 부족하다", "협업 관점의 설명이 필요하다" 등 구체적인 약점을 지적</td>
+    </tr>
+    <tr>
+      <td>💡 <b>질문 자연스러움</b></td>
+      <td>이전 답변 맥락을 반영 "~라고 하셨는데, 구체적으로 어떤 기술을 사용했나요?"와 같은 자연스러운 연결형 질문 생성</td>
+    </tr>
+    <tr>
+      <td>💡 <b>리포트 품질</b></td>
+      <td>면접 종료 후 생성된 종합 리포트가 지원자의 강점과 보완점을 구조적으로 요약 </td>
+    </tr>
+  </tbody>
+</table>
+
+# 6️⃣ 기대 효과 및 활용 방안 (Expected Effects & Application)
+> **본 AI 면접관 Agent는 채용 담당자(HR)의 업무 효율성을 극대화하고, 구직자에게는 언제 어디서나 접근 가능한 고품질의 모의 면접 환경을 제공**
+
