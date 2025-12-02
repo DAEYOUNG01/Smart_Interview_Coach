@@ -332,7 +332,7 @@
 
 ### 🌠 4.3  대화 관리 (Dialogue Management)
 
-> **LangGraph를 활용하여 인터뷰의 전체 흐름(Context)을 상태(State)로 관리하고, 평가 결과에 따라 다음 행동을 동적으로 결정**
+> **LangGraph를 활용하여 인터뷰의 context와 State를 관리하고, 평가 결과에 따라 다음 행동을 동적으로 결정**
 
 * **💡State관리 (InterviewState)**
     - conversation : 누적된 대화 로그 (History)
