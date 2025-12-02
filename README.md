@@ -274,7 +274,7 @@
 
 --- 
 
-# 4️⃣ Agent 설계 및 구현 (Architecture & Implementation) 🌠
+# 4️⃣ Agent 설계 및 구현 (Architecture & Implementation)
 
 > **본 시스템은 LangGraph 프레임워크를 기반으로 State를 관리, 역할에 따라 최적화된 LLM 모델 하이브리드 운용**
 
@@ -294,7 +294,7 @@
     <tr>
       <td>💡 <b>GPT-4o</b></td>
       <td align="center"><b>답변 평가<br></td>
-      <td><b>복합적인 맥락 이해와 논리적 추론 능력 ⬆️, 답변의 미세한 뉘앙스와 점수 산정의 정확성을 보장</b></td>
+      <td><b>복합적 맥락 이해와 논리적 추론 능력 ⬆️, 답변의 미세한 뉘앙스와 점수 산정의 정확성 보장</b></td>
     </tr>
     <tr>
       <td>💡 <b>GPT-4o-mini</b></td>
