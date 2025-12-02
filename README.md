@@ -285,7 +285,7 @@
 <table>
   <thead>
     <tr>
-      <th width="150">모델</th>
+      <th width="200">모델</th>
       <th width="200">사용 모듈</th>
       <th width="700">선정 이유</th>
     </tr>
