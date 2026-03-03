@@ -1,5 +1,5 @@
 # Smart_Interview_Coach_LangChain
-# AI 면접관 Agent
+AI 면접관 Agent을 활용한 면접 컨설팅 지원 시스템
 
 <div align="center">
   <img width="601" height="400" alt="image" src="https://github.com/user-attachments/assets/6eb98d63-b0c8-4528-86e8-f8e33ff48859" />
